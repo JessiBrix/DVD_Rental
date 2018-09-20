@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class IOController {
 
-
     private OutputStream byteArrayOutputStream;
     private InputStream byteArrayInputStream;
 

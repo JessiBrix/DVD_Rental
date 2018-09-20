@@ -12,5 +12,6 @@ dependencies {
     implementation 'com.google.guava:guava:23.0'
     testImplementation 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.11.1'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
 }
 

@@ -1,24 +1,25 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ApplicationTest {
 
     private Application application;
+
+    @Mock
     private IOController ioController;
-    private ByteArrayInputStream byteArrayInputStream;
-    private ByteArrayOutputStream byteArrayOutputStream;
 
     @Before
     public void setUp() throws Exception {
-        byteArrayInputStream = new ByteArrayInputStream("".getBytes());
-        byteArrayOutputStream = new ByteArrayOutputStream();
-        ioController = new IOController(byteArrayOutputStream, byteArrayInputStream);
+        MockitoAnnotations.initMocks(this);
         application = new Application(ioController);
     }
 
@@ -31,19 +32,47 @@ public class ApplicationTest {
         application.promptUser();
 
         // Assert
-        assertThat(byteArrayOutputStream.toString()).isEqualTo("Enter rental days");
+        verify(ioController).write("Enter rental days");
     }
 
     @Test
     public void getUserInput() throws IOException {
-        byteArrayInputStream = new ByteArrayInputStream("User input".getBytes());
-        ioController = new IOController(byteArrayOutputStream, byteArrayInputStream);
-        application = new Application(ioController);
 
         // Act
         String input = application.getUserInput();
 
         // Assert
-        assertThat(input).isEqualTo("User input");
+        verify(ioController).read();
+    }
+
+    @Test
+    public void promptTotalRent() throws IOException {
+        // Act
+        application.promptResult("Total rent");
+
+        // Assert
+        verify(ioController).write("Total rent");
+    }
+
+    @Test
+    public void checkTotalRent() throws IOException {
+        // Act
+        double result = application.checkResult(2);
+
+        // Assert
+        assertThat(result).isEqualTo(2.0);
+    }
+
+    @Test
+    public void applicationCanRunProgSuccessfully() throws IOException {
+        //Assume
+        when(ioController.read()).thenReturn("3");
+        //Act
+        application.run();
+
+        //Assert
+        verify(ioController).write("Leihgebühr: 3.75");
+
+
     }
 }
