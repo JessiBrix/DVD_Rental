@@ -11,7 +11,7 @@ public class Application {
     }
 
     public void promptUser() throws IOException {
-        ioController.write("Enter rental days");
+        ioController.write("Enter rental days ");
     }
 
     public String getUserInput() throws IOException {

@@ -32,7 +32,7 @@ public class ApplicationTest {
         application.promptUser();
 
         // Assert
-        verify(ioController).write("Enter rental days");
+        verify(ioController).write("Enter rental days ");
     }
 
     @Test
